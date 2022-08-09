@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-12 p-5">
+			<h3>Your Conversations</h3>
+		</div>
+	</div>
+
+
+
+	{% for thread in threads.all %}
+	<div class="row mb-3">
+
+			
+			<a class="list-group-item list-group-item-action flex-column align-items-start" href="{% url 'accounts:thread' thread.pk %}">
+				<div class='row'>
+				<div class='col-4'>
+				<img class="rounded-circle account-img" src="{{ thread.receiver.profile.avatar.url }}" height ="100" width="100">
+				</div>
+				<div class='col-4 pt-4'>
+				{% if user == thread.user %}
+				<h2>@{{ thread.receiver }}</h2>
+				{% else %}
+				<h2>@{{ thread.user }}</h2>
+				{% endif %}
+				</div>
+				</div>
+			</a>
+
+	</div>
+	{% endfor %}
+
+	<div class="row">
+		<div class="col-md-12 p-5">
+			<form method="GET" action="{% url 'accounts:create-thread' %}">
+				<button class="custom-btn btn-3" type="submit"><span>New message</span></button>
+			</form>
+		</div>
+	</div>
+</div>
+
+{%endblock content %}

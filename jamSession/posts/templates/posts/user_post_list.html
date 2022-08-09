@@ -1,0 +1,64 @@
+{% extends "posts/post_base.html" %}
+
+{% block prepost %}
+<div class="row pt-3">
+<div class="col-md-4">
+	<h1>@{{ post_user.username }}</h1>
+	<img class="rounded-circle account-img" src="{{ post_user.profile.avatar.url }}" height ="200" width="200">
+
+	<div class='row pt-3'>
+	<form class='pr-2'action="{% url 'accounts:endorse' pk=post_user.profile.id %}" method="POST">
+		{% csrf_token %}
+		<button type="submit",  value="{{ post_user.profile.endorsements.count }}", class="custom-btn btn-3"><span>Endorse User</span></button>
+	</form>
+	
+
+	<form action="{% url 'accounts:create-thread-formless' post_user.id %}" method='POST'>
+		{% csrf_token %}
+		<button type="submit", class="custom-btn btn-3"><span>Send Message</span></button>
+	</form>
+	</div>
+	<p class="pt-2"> Number of Endorsements:{{post_user.profile.endorsements.count}}</p>
+	<div class="row">
+		
+	</div>
+</div>
+<div class="col-md-4 border rounded">
+	
+	<p>Instrument: {{post_user.profile.instruments}}</p>
+	{% if post_user.profile.singer == False %}
+	<p>Singer? : No</p>
+	{% else %}
+	<p>Singer? : Yes</p>
+	{% endif %}
+	{% if post_user.profile.music_production_experience == False %}
+	<p>Music Production Experience? : No</p>
+	{% else %}
+	<p>Music Production Experience? : Yes</p>
+	{% endif %}
+	<p>Experience_level: {{post_user.profile.experience_level}}
+	<p>Willingness to Travel: {{post_user.profile.location}}</p>
+	<p>Zip code: {{post_user.profile.location_zip}}</p>
+	<p>Goals: {{post_user.profile.goals}}</p>
+	<p>Associated Acts: {{post_user.profile.associated_acts}}</p>
+	<p>Bio: {{post_user.profile.profile_text}}</p>
+
+	
+
+
+
+		
+</div>
+</div>
+
+<hr/>
+<p>Post History</p>
+{% endblock %}
+
+{% block post_content %}
+<div class="col-md-8">
+	{% for post in post_list %}
+		{% include "posts/_post.html" %}
+	{% endfor %}
+</div>
+{% endblock %}

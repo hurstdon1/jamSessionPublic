@@ -1,0 +1,55 @@
+{% extends 'accounts/profile_base.html' %}
+{% load crispy_forms_tags %}
+{% block preprofile %}
+
+<div class="col-md-4 pt-2">
+	<div class="content">
+        <div class="card card-body">
+			<h2>Musician Profiles</h2>
+
+			<p>Welcome to the Profiles Page!</p>
+            <p>Select a Profile with a shared interest!</p>
+        </div>
+        <br></br>
+            
+            <div class="card card-body">
+                <h2>Musician Search</h2>
+                <form method="get">
+                    {{filter.form|crispy}}
+                    <p>(location searches surrounding area)</p>
+                    <button class='custom-btn btn-3' type='submit'><span>Search</span></button>
+                </form>
+            </div>
+	</div>
+</div>
+
+
+{% endblock %}
+
+{% block profile_content %}
+
+<div class="col-md-8  overflow-hidden pt-2">
+	<div class="list-group">
+        {% for profile in filter.qs %}
+        <a href="{% url 'posts:for_user' username=profile.user.username %}" class="list-group-item list-group-item-action flex-column align-items-start">@{{profile.user.username }}
+        <div class='row'>
+            <div class='col-4'>
+                
+                <img class="rounded-circle account-img" src="{{ profile.avatar.url }}" height ="100" width="100">
+            </div>
+
+            <div class='col-5'>
+            <p class="mb-1">Instrument: {{ profile.instruments }}</p>
+            <p class="mb-1">Experience Level: {{ profile.experience_level }}</p>
+            <p class="mb-1">Travel Specifications: {{ profile.location }}</p>
+            <p class="mb-1">Location: {{ profile.location_zip }}</p>
+            </div>
+        </div>
+        
+        </a >
+
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

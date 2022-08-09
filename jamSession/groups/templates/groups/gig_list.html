@@ -1,0 +1,46 @@
+{% extends "groups/group_base.html" %}
+
+{% block pregroup %}
+<div class="col-md-4">
+	<div class="content">
+		{% if user.is_authenticated %}
+		<h2>
+			Welcome back
+			<a href="{% url 'posts:for_user' username=user.username %}">@{{user.username }}</a>
+		</h2>
+
+    {% endif %}
+			<h2>Gigs</h2>
+
+			<p>Welcome to the Gigs Page! <br>Create a gig or message a gig organizer!</p>
+	</div>
+	{% if user.is_authenticated %}
+	<a href="{% url 'groups:create-gig' %}" class="btn btn-warning" role="button"><span class="fa fa-plus"></span> Create New Gig!</a>
+	{% endif %}
+</div>
+{% endblock %}
+
+{% block group_content %}
+<div class="col-md-8">
+	<div class="list-gig">
+		{% for gig in object_list %}
+            <div class="list-group-item list-group-item-action flex-column align-items-start">
+			<h3 class="mb-1">{{ gig.name }}</h3>
+            <h5 class='mt-1'>Organizer: <a href="{% url 'posts:for_user' username=gig.user.username %}">@{{gig.user.username}}</a></h5>
+            
+			<p class="mb-1">Where: {{ gig.location|safe }}</p>
+            <p class="mb-1">When: {{ gig.date|safe }}</p>
+            <p class="mb-1">Instrument Needed: {{ gig.instruments_needed|safe }}</p>
+            <p class="mb-1">Pay: ${{ gig.pay|safe }}</p>
+            <p class="mb-1">{{ gig.info|safe }}</p>
+            <form action="{% url 'accounts:create-thread-formless' gig.user.id %}" method='POST'>
+                {% csrf_token %}
+                <button type="submit", class="custom-btn btn-3"><span>Send Message</span></button>
+            </form>
+			</div>
+		</a>
+
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}
